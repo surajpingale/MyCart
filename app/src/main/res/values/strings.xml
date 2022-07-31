@@ -1,0 +1,127 @@
+<resources>
+    <string name="app_name">MyCart</string>
+
+    <!-- Login Screen   -->
+    <string name="login">Login</string>
+    <string name="hint_email_id">Email Id</string>
+    <string name="hint_password">Password</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="dont_have_account">Don\'t have account?</string>
+    <string name="register">Register</string>
+    <string name="back_arrow_desc">Back Arrow</string>
+
+    <!-- Login fragment   -->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="terms_and_condition_agree">I agree to the Terms and Conditions.</string>
+    <string name="already_have_an_account">Already have and account?</string>
+
+    <!-- Register fragment   -->
+    <string name="error_msg_first_name">*Enter first Name</string>
+    <string name="error_msg_last_name">*Enter last Name</string>
+    <string name="error_msg_email_id">*Enter email id</string>
+    <string name="error_msg_password">*Enter password</string>
+    <string name="error_msg_confirm_password">*Enter confirm password</string>
+    <string name="please_wait">Please wait&#8230;</string>
+
+
+    <!-- Forgot password fragment   -->
+    <string name="text_forgot_password">Forgot password</string>
+    <string name="send_email">Send email</string>
+
+    <!-- Profile fragment   -->
+    <string name="mobile_number">Mobile Number</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="error_msg_mobile_no">*Enter mobile number</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Bottom nav menu   -->
+    <string name="dashboard">Dashboard</string>
+    <string name="products">Products</string>
+    <string name="orders">Orders</string>
+    <string name="sold_products">Sold</string>
+
+
+    <!-- Settings Fragment   -->
+    <string name="settings">Settings</string>
+    <string name="edit">Edit</string>
+    <string name="logout">Logout</string>
+    <string name="profile_pic_description">Image</string>
+
+    <!-- Add product Fragment   -->
+    <string name="add_product">Add Product</string>
+    <string name="product_name">Product Name</string>
+    <string name="product_price">Product Price(₹)</string>
+    <string name="product_description">Product Description</string>
+    <string name="product_quantity">Product quantity</string>
+    <string name="error_msg_product_name">*Enter product name</string>
+    <string name="error_msg_product_price">*Enter product price</string>
+    <string name="error_msg_product_description">*Enter product description</string>
+    <string name="error_msg_product_quantity">*Enter product quantity</string>
+
+
+    <!-- Products Fragment   -->
+    <string name="rupee_symbol">₹</string>
+
+    <!-- Product details Fragment   -->
+    <string name="delete">Delete</string>
+    <string name="go_to_cart">Go to cart</string>
+
+
+    <!-- Cart Fragment   -->
+    <string name="cart">Cart</string>
+    <string name="buy_now">Buy now</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="checkout">Checkout</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="shipping_charges">Shipping Charges</string>
+    <string name="total_amount">Total amount(₹)</string>
+    <string name="no_cart_item_found">No cart item found</string>
+    <string name="stock_for_available">Available stock is %1$s You can\'t add more than stock quantity.</string>
+
+    <!-- Cart Fragment   -->
+    <string name="address_list">Address list</string>
+    <string name="add_address">Add Address</string>
+
+    <!-- Address Fragment   -->
+    <string name="no_address_found">No address found</string>
+
+    <!-- Add address Fragment   -->
+    <string name="full_name">Full name</string>
+    <string name="zip_code">Zip code</string>
+    <string name="address">Address</string>
+    <string name="add">Add</string>
+    <string name="error_msg_full_name">*Enter full Name</string>
+    <string name="error_msg_mobile_number">*Enter mobile number</string>
+    <string name="error_msg_address">*Enter address</string>
+    <string name="error_msg_zip_code">*Enter zip code</string>
+    <string name="update">Update</string>
+
+
+    <!-- Checkout Fragment   -->
+    <string name="selected_address">Selected Address</string>
+    <string name="summary">Summary</string>
+    <string name="payment_mode">Payment mode</string>
+    <string name="cash_on_delivery">Cash on delivery</string>
+
+    <!-- Orders Fragment   -->
+    <string name="no_orders_found">No orders found!!</string>
+
+    <!-- Order details Fragment   -->
+    <string name="order_details">Order details</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_date">Order Date</string>
+    <string name="order_status">Order Status</string>
+    <string name="pending">Pending</string>
+    <string name="in_process">In process</string>
+    <string name="delivered">Delivered</string>
+
+    <!-- Sold product Fragment   -->
+    <string name="no_sold_product_found">No sold product found!!</string>
+
+
+</resources>

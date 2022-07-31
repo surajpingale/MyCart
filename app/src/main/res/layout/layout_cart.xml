@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root_cart_layout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_cart_items"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_0dp"
+        android:layout_marginTop="@dimen/_4dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:paddingBottom="@dimen/_8dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_subtotal_heading"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_cart"/>
+
+    <com.example.mycart.utils.customviews.MyCartTextView
+        android:id="@+id/tv_subtotal_heading"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:text="@string/subtotal"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_shipping_charges_heading"
+        app:layout_constraintEnd_toStartOf="@id/tv_subtotal"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.example.mycart.utils.customviews.MyCartTextViewBold
+        android:id="@+id/tv_subtotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_0dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:paddingStart="@dimen/_4dp"
+        android:paddingEnd="@dimen/_4dp"
+        android:textColor="@color/colorThemeOrange"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_shipping_charges"
+        app:layout_constraintEnd_toEndOf="@id/tv_shipping_charges"
+        app:layout_constraintStart_toStartOf="@id/tv_shipping_charges"
+        tools:text="₹2000" />
+
+
+    <com.example.mycart.utils.customviews.MyCartTextView
+        android:id="@+id/tv_shipping_charges_heading"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:text="@string/shipping_charges"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_total_heading"
+        app:layout_constraintEnd_toStartOf="@id/tv_shipping_charges"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.example.mycart.utils.customviews.MyCartTextViewBold
+        android:id="@+id/tv_shipping_charges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_0dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:paddingStart="@dimen/_4dp"
+        android:paddingEnd="@dimen/_4dp"
+        android:textColor="@color/colorThemeOrange"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_total"
+        app:layout_constraintEnd_toEndOf="@id/tv_total"
+        app:layout_constraintStart_toStartOf="@id/tv_total"
+        tools:text="₹2000" />
+
+
+    <com.example.mycart.utils.customviews.MyCartTextView
+        android:id="@+id/tv_total_heading"
+        android:layout_width="@dimen/_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:text="@string/total_amount"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintBottom_toTopOf="@id/btn_checkout"
+        app:layout_constraintEnd_toStartOf="@id/tv_total"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.example.mycart.utils.customviews.MyCartTextViewBold
+        android:id="@+id/tv_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:paddingStart="@dimen/_4dp"
+        android:paddingEnd="@dimen/_4dp"
+        android:textColor="@color/colorThemeOrange"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintBottom_toTopOf="@id/btn_checkout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_total_heading"
+        tools:text="₹2000" />
+
+    <com.example.mycart.utils.customviews.MyCartButton
+        android:id="@+id/btn_checkout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15dp"
+        android:layout_marginEnd="@dimen/_15dp"
+        android:layout_marginBottom="@dimen/_8dp"
+        android:text="@string/checkout"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

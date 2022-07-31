@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.fragments.AddressFragment">
+
+    <com.example.mycart.utils.customviews.MyCartTextViewBold
+        android:id="@+id/btn_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12dp"
+        android:layout_marginTop="@dimen/_8dp"
+        android:layout_marginEnd="@dimen/_12dp"
+        android:background="@drawable/text_view_button_bg"
+        android:gravity="center"
+        android:paddingStart="@dimen/_12dp"
+        android:paddingTop="@dimen/_8dp"
+        android:paddingEnd="@dimen/_12dp"
+        android:paddingBottom="@dimen/_8dp"
+        android:text="@string/address_list"
+        android:textSize="@dimen/_16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.mycart.utils.customviews.MyCartTextView
+        android:id="@+id/tv_no_cart_item_found"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_0dp"
+        android:gravity="center"
+        android:text="@string/no_address_found"
+        android:textColor="@color/colorThemeOrange"
+        android:textSize="@dimen/_24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_address" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_address"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_0dp"
+        android:layout_marginTop="@dimen/_4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_address" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

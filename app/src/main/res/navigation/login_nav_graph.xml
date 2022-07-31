@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment_login"
+    android:id="@+id/login_nav_graph">
+
+    <fragment
+        android:id="@+id/fragment_login"
+        android:name="com.example.mycart.views.fragments.LoginFragment"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/frag_login_to_frag_register"
+            app:destination="@id/fragment_register" />
+
+        <action
+            android:id="@+id/frag_login_to_frag_forgot_password"
+            app:destination="@id/fragment_forgot_password"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_register"
+        android:name="com.example.mycart.views.fragments.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+
+        <action
+            android:id="@+id/frag_register_to_frag_login"
+            app:destination="@id/fragment_login" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_forgot_password"
+        android:name="com.example.mycart.views.fragments.ForgotPasswordFragment"
+        tools:layout="@layout/layout_forgot_password"
+        />
+
+</navigation>

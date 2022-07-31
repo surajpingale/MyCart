@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_0dp"
+    android:layout_marginTop="@dimen/_0dp"
+    android:layout_marginEnd="@dimen/_0dp"
+    android:layout_marginBottom="@dimen/_0dp"
+    android:elevation="@dimen/_0dp"
+    app:cardCornerRadius="@dimen/_0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_product_image_cart"
+            android:layout_width="@dimen/_100dp"
+            android:layout_height="@dimen/_100dp"
+            android:layout_margin="@dimen/_8dp"
+            android:elevation="@dimen/_0dp"
+            app:cardCornerRadius="@dimen/_8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_cart_product"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/profile_pic_description"
+                android:scaleType="fitXY"
+                tools:srcCompat="@drawable/ic_user_placeholder" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.example.mycart.utils.customviews.MyCartTextViewBold
+            android:id="@+id/tv_cart_product_name"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8dp"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_marginEnd="@dimen/_8dp"
+            android:paddingStart="@dimen/_4dp"
+            android:paddingEnd="@dimen/_4dp"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/iv_cart_delete"
+            app:layout_constraintStart_toEndOf="@id/cv_product_image_cart"
+            app:layout_constraintTop_toTopOf="@id/cv_product_image_cart"
+            tools:text="Product name" />
+
+        <com.example.mycart.utils.customviews.MyCartTextViewBold
+            android:id="@+id/tv_rupee_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8dp"
+            android:layout_marginTop="@dimen/_0dp"
+            android:paddingStart="@dimen/_4dp"
+            android:paddingEnd="@dimen/_4dp"
+            android:text="@string/rupee_symbol"
+            android:textColor="@color/colorThemeOrange"
+            android:textSize="@dimen/_18sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_cart_product_price"
+            app:layout_constraintStart_toEndOf="@id/cv_product_image_cart"
+            app:layout_constraintTop_toBottomOf="@id/tv_cart_product_name" />
+
+        <com.example.mycart.utils.customviews.MyCartTextView
+            android:id="@+id/tv_cart_product_price"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8dp"
+            android:paddingStart="@dimen/_4dp"
+            android:paddingEnd="@dimen/_4dp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rupee_symbol"
+            app:layout_constraintEnd_toStartOf="@id/iv_cart_delete"
+            app:layout_constraintStart_toEndOf="@id/tv_rupee_symbol"
+            app:layout_constraintTop_toTopOf="@id/tv_rupee_symbol"
+            tools:text="2000" />
+
+
+        <ImageView
+            android:id="@+id/iv_cart_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_4dp"
+            android:background="?actionBarItemBackground"
+            android:contentDescription="@string/delete"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_cart_product_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/colorThemeOrange" />
+
+        <ImageView
+            android:id="@+id/iv_remove_product_from_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8dp"
+            android:layout_marginEnd="@dimen/_8dp"
+            android:contentDescription="@string/profile_pic_description"
+            android:src="@drawable/ic_remove"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_product_in_cart"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/tv_rupee_symbol"
+            app:tint="@color/colorThemeOrange" />
+
+
+        <com.example.mycart.utils.customviews.MyCartTextViewBold
+            android:id="@+id/tv_product_in_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8dp"
+            android:layout_marginEnd="@dimen/_8dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/_8dp"
+            android:paddingEnd="@dimen/_8dp"
+            android:background="@drawable/bg_edit_text_not_focused"
+            android:textColor="@color/colorThemeOrange"
+            android:textSize="@dimen/_16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_add_product_to_cart"
+            app:layout_constraintTop_toBottomOf="@id/tv_rupee_symbol"
+            tools:text="1" />
+
+        <ImageView
+            android:id="@+id/iv_add_product_to_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8dp"
+            android:contentDescription="@string/profile_pic_description"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/iv_cart_delete"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/tv_rupee_symbol"
+            app:tint="@color/colorThemeOrange" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

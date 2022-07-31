@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="EditTextWithTextView">
+
+        <attr name="headerText" format="string"/>
+        <attr name="editTextHint" format="string"/>
+
+        <attr name="errorText" format="string"/>
+        <attr name="errorTextVisibility" format="enum">
+            <enum name="visible" value= "1"/>
+            <enum name="invisible" value="2"/>
+            <enum name="gone" value="0"/>
+        </attr>
+
+
+    </declare-styleable>
+
+</resources>
