@@ -45,6 +45,9 @@
     <string name="orders">Orders</string>
     <string name="sold_products">Sold</string>
 
+    <!-- Dashboard Fragment   -->
+    <string name="features">Features</string>
+
 
     <!-- Settings Fragment   -->
     <string name="settings">Settings</string>

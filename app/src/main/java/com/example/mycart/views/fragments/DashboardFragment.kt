@@ -13,12 +13,14 @@ import com.example.mycart.application.MyCartApplication
 import com.example.mycart.databinding.FragmentDashboardBinding
 import com.example.mycart.model.Product
 import com.example.mycart.utils.Constants
+import com.example.mycart.utils.CustomDialog
 import com.example.mycart.utils.Response
 import com.example.mycart.viewmodel.DashboardViewModel
 import com.example.mycart.viewmodel.DashboardViewModelFactory
 import com.example.mycart.views.activities.MainActivity
 import com.example.mycart.views.adapter.DashboardAdapter
-import kotlinx.coroutines.Job
+import com.example.mycart.views.adapter.DashboardSliderAdapter
+import kotlinx.coroutines.*
 
 
 class DashboardFragment : Fragment(), DashboardAdapter.OnDashboardItemClick {
@@ -36,6 +38,7 @@ class DashboardFragment : Fragment(), DashboardAdapter.OnDashboardItemClick {
     }
 
     private lateinit var productList: List<Product>
+    private lateinit var mProductList: List<Product>
     private lateinit var dashboardAdapter: DashboardAdapter
     private lateinit var job: Job
 
@@ -62,34 +65,56 @@ class DashboardFragment : Fragment(), DashboardAdapter.OnDashboardItemClick {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireActivity(), 2)
             adapter = dashboardAdapter
+            isNestedScrollingEnabled = false
         }
+        getListOfProducts()
+    }
 
+    private fun getListOfProducts() {
         viewModel.getAllProducts()
         viewModel.productLiveData.observe(viewLifecycleOwner) { state ->
-
             when (state) {
                 is Response.Success -> {
-                    dashboardAdapter.updateList(state.data!!)
+                    mProductList = state.data!!
+                    dashboardAdapter.updateList(mProductList)
+                    addingImagesForSlider()
                 }
                 is Response.Error -> {
-
+                    CustomDialog.showToast(requireActivity(), "Something wrong")
                 }
             }
         }
+    }
+
+    private fun addingImagesForSlider() {
+        val viewPager2 = binding.vp2Images
+        val sliderImagesList = ArrayList<String>()
+        for (i in mProductList) {
+            val string = i.image
+            sliderImagesList.add(string)
+        }
+        val dashImageSliderAdapter = DashboardSliderAdapter(
+            requireActivity(),
+            sliderImagesList
+        )
+        viewPager2.adapter = dashImageSliderAdapter
 
         /**
          * for auto sliding view pager
          */
-//        job = CoroutineScope(Dispatchers.IO).launch {
-//            var loopCount = 0
-//            while (true) {
-//                loopCount++
-//                delay(2000)
-//                withContext(Dispatchers.Main) {
-//
-//                }
-//            }
-//        }
+        job = CoroutineScope(Dispatchers.IO).launch {
+            while (true) {
+                delay(3000)
+                withContext(Dispatchers.Main) {
+
+                    if (viewPager2.currentItem == sliderImagesList.size - 1) {
+                        viewPager2.currentItem = 0
+                    } else {
+                        viewPager2.currentItem = viewPager2.currentItem + 1
+                    }
+                }
+            }
+        }
     }
 
     private fun setUpToolbar() {
@@ -120,6 +145,6 @@ class DashboardFragment : Fragment(), DashboardAdapter.OnDashboardItemClick {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        job.cancel()
+        job.cancel()
     }
 }
