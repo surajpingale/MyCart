@@ -44,7 +44,6 @@ class AddProductViewModel(
         response.addOnSuccessListener { taskSnapshot ->
             taskSnapshot.metadata!!.reference!!.downloadUrl
                 .addOnSuccessListener { imageUrl ->
-
                     imageMutableData.postValue(Response.Success(imageUrl.toString()))
                 }
                 .addOnFailureListener { exception ->

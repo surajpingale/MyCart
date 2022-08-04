@@ -6,11 +6,29 @@ import androidx.lifecycle.ViewModel
 import com.example.mycart.model.*
 import com.example.mycart.model.repository.FireStoreRepository
 import com.example.mycart.utils.Response
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class UserDetailViewModel(private val repository: FireStoreRepository) : ViewModel() {
+
+    // for registering user
+    private var registerUserMutable = MutableLiveData<Response<String>>()
+    val registerUserLiveData: LiveData<Response<String>>
+        get() = registerUserMutable
+
+    // for creating user
+    private var createUserMutable = MutableLiveData<Response<String>>()
+    val createUserLiveData: LiveData<Response<String>>
+        get() = createUserMutable
+
+    // for sign in or login user
+    private var loginUserMutable = MutableLiveData<Response<String>>()
+    val loginUserLiveData: LiveData<Response<String>>
+        get() = loginUserMutable
+
+
+    // for updating user details
+    private var updateUserProfileMutable = MutableLiveData<Response<String>>()
+    val updateUserProfileLiveData: LiveData<Response<String>>
+        get() = updateUserProfileMutable
 
     // for storing user details
     private var userMutableData = MutableLiveData<User>()
@@ -92,9 +110,41 @@ class UserDetailViewModel(private val repository: FireStoreRepository) : ViewMod
 
     var alreadyLoaded = false
 
-    private var orderListLiveMutable2 = MutableLiveData<List<Order>>()
-    val orderListLiveData2 : LiveData<List<Order>>
-    get() = orderListLiveMutable2
+    fun createUser(email: String, password: String) {
+        val result = repository.createUserWithEmailAndPass(email, password)
+        result.addOnCompleteListener { result ->
+
+            if (result.isSuccessful) {
+                createUserMutable.postValue(Response.Success("Success"))
+            } else {
+                createUserMutable.postValue(Response.Error("Error"))
+            }
+
+        }
+    }
+
+    fun registerUser(user: User) {
+        val result = repository.registerUser(user)
+        result.addOnSuccessListener {
+            registerUserMutable.postValue(Response.Success("Success"))
+        }
+            .addOnFailureListener { exception ->
+                registerUserMutable.postValue(Response.Error(exception.toString()))
+            }
+    }
+
+    fun loginUser(email: String, password: String) {
+        val result = repository.signInWithEmailAndPass(email, password)
+        result.addOnCompleteListener { result ->
+
+            if (result.isSuccessful) {
+                loginUserMutable.postValue(Response.Success("Success"))
+            } else {
+                loginUserMutable.postValue(Response.Error("Error"))
+            }
+        }
+    }
+
 
     fun getUserDetails() {
         repository.getCurrentUserDetails()
@@ -297,6 +347,16 @@ class UserDetailViewModel(private val repository: FireStoreRepository) : ViewMod
         }
             .addOnFailureListener { exception ->
                 soldProductListMutable.postValue(Response.Error(exception.toString()))
+            }
+    }
+
+    fun updateUserProfile(hashMap: HashMap<String, Any>) {
+        val result = repository.updateUserProfile(hashMap)
+        result.addOnSuccessListener {
+            updateUserProfileMutable.postValue(Response.Success("Success"))
+        }
+            .addOnFailureListener { exception ->
+                updateUserProfileMutable.postValue(Response.Error(exception.toString()))
             }
     }
 

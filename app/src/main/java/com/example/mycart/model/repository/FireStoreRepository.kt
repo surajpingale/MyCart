@@ -2,12 +2,11 @@ package com.example.mycart.model.repository
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.webkit.MimeTypeMap
-import androidx.lifecycle.LiveData
 import com.example.mycart.model.*
 import com.example.mycart.utils.Constants
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,6 +22,13 @@ class FireStoreRepository(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseFirestore: FirebaseFirestore
 ) {
+
+    /**
+     * fun for creating user with email and password
+     */
+    fun createUserWithEmailAndPass(email: String, password: String): Task<AuthResult> {
+        return firebaseAuth.createUserWithEmailAndPassword(email, password)
+    }
 
     /**
      * fun for registering user details
@@ -42,6 +48,12 @@ class FireStoreRepository(
             .update(userHashMap)
     }
 
+    /**
+     * fun for log in or sign in user
+     */
+    fun signInWithEmailAndPass(email: String, password: String): Task<AuthResult> {
+        return firebaseAuth.signInWithEmailAndPassword(email, password)
+    }
 
     /**
      * fun for upload image

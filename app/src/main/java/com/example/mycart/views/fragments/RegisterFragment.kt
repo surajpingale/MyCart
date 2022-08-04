@@ -4,26 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.example.dishapp.interfaces.CustomToolbar
 import com.example.mycart.R
 import com.example.mycart.application.MyCartApplication
 import com.example.mycart.databinding.FragmentRegisterBinding
-import com.example.mycart.interfaces.FirebaseRegisterListener
 import com.example.mycart.model.User
 import com.example.mycart.utils.Constants
 import com.example.mycart.utils.CustomDialog
+import com.example.mycart.utils.Response
+import com.example.mycart.viewmodel.UserDetailViewModel
+import com.example.mycart.viewmodel.UserViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class RegisterFragment : Fragment(), View.OnClickListener, FirebaseRegisterListener {
+class RegisterFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentRegisterBinding? = null
 
     private val binding: FragmentRegisterBinding
         get() = _binding!!
+
+    private val viewModel: UserDetailViewModel by viewModels {
+        UserViewModelFactory(
+            (requireActivity().application as MyCartApplication).fireStoreRepository
+        )
+    }
 
     // Firebase instance
     private lateinit var firebaseAuth: FirebaseAuth
@@ -92,43 +100,40 @@ class RegisterFragment : Fragment(), View.OnClickListener, FirebaseRegisterListe
         val firstName = include.etTvFirstName.editText.text.toString().trim { it <= ' ' }
         val lastName = include.etTvLastName.editText.text.toString().trim { it <= ' ' }
 
-        firebaseAuth.createUserWithEmailAndPassword(emailId, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+        viewModel.createUser(emailId, password)
+        viewModel.createUserLiveData.observe(viewLifecycleOwner) { state ->
 
-                    val firebaseUser = task.result.user!!
-
+            when (state) {
+                is Response.Success -> {
                     val user = User()
-                    user.id = firebaseUser.uid
+                    user.id = viewModel.getUserId()
                     user.email = emailId
                     user.firstName = firstName
                     user.lastName = lastName
-
-                    appClass.fireStore.registerUser(
-                        this, firebaseFireStore,
-                        user
-                    )
-
-                } else {
-                    showToast("Error in register..")
+                    viewModel.registerUser(user)
+                }
+                is Response.Error -> {
+                    CustomDialog.showToast(requireActivity(), "Error in register..")
                 }
             }
-    }
+        }
 
-    override fun onSuccessListener() {
-        CustomDialog.hideDialog()
-        firebaseAuth.signOut()
-        activity?.onBackPressed()
-        showToast("Registered successfully")
-    }
+        viewModel.registerUserLiveData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is Response.Success -> {
 
-    override fun onFailureListener() {
-        CustomDialog.hideDialog()
-        showToast("Error in register..")
-    }
+                    CustomDialog.hideDialog()
+                    firebaseAuth.signOut()
+                    activity?.onBackPressed()
+                    CustomDialog.showToast(requireActivity(), "Registered successfully")
 
-    private fun showToast(msg: String) {
-        Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
+                }
+                is Response.Error -> {
+                    CustomDialog.hideDialog()
+                    CustomDialog.showToast(requireActivity(), "Error in register..")
+                }
+            }
+        }
     }
 
     /**
@@ -195,7 +200,7 @@ class RegisterFragment : Fragment(), View.OnClickListener, FirebaseRegisterListe
         }
 
         if (password != confirmPassword) {
-            showToast("Passwords not matching")
+            CustomDialog.showToast(requireActivity(),"Passwords not matching")
             return false
         }
         return true

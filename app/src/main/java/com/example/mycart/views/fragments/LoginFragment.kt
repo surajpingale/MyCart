@@ -5,32 +5,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.dishapp.interfaces.CustomToolbar
 import com.example.mycart.R
 import com.example.mycart.application.MyCartApplication
 import com.example.mycart.databinding.FragmentLoginBinding
-import com.example.mycart.interfaces.FirebaseLoginListener
-import com.example.mycart.model.User
 import com.example.mycart.utils.Constants
 import com.example.mycart.utils.CustomDialog
+import com.example.mycart.utils.Response
+import com.example.mycart.viewmodel.UserDetailViewModel
+import com.example.mycart.viewmodel.UserViewModelFactory
 import com.example.mycart.views.activities.MainActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 
-class LoginFragment : Fragment(), View.OnClickListener, FirebaseLoginListener {
+class LoginFragment : Fragment(), View.OnClickListener{
 
     private var _binding: FragmentLoginBinding? = null
 
     private val binding: FragmentLoginBinding
         get() = _binding!!
 
-    private lateinit var appClass: MyCartApplication
-    private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var firebaseFireStore: FirebaseFirestore
+    private val viewModel: UserDetailViewModel by viewModels {
+        UserViewModelFactory(
+            (requireActivity().application as MyCartApplication).fireStoreRepository
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,9 +46,6 @@ class LoginFragment : Fragment(), View.OnClickListener, FirebaseLoginListener {
     }
 
     private fun initViewsAndListeners() {
-        appClass = (requireActivity().application as MyCartApplication)
-        firebaseAuth = appClass.firebaseAuth
-        firebaseFireStore = appClass.firebaseFirestore
 
         val include = binding.include
 
@@ -100,17 +98,24 @@ class LoginFragment : Fragment(), View.OnClickListener, FirebaseLoginListener {
         val emailId = include.etTvEmail.editText.text.toString()
         val password = include.etTvPassword.editText.text.toString()
 
-        firebaseAuth.signInWithEmailAndPassword(emailId, password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                appClass.fireStore.getCurrentUserDetails(
-                    this,
-                    firebaseFireStore,
-                    firebaseAuth
-                )
-            } else {
-                CustomDialog.hideDialog()
-                Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT).show()
+        viewModel.loginUser(emailId, password)
+        viewModel.loginUserLiveData.observe(viewLifecycleOwner) { state ->
+
+            when (state) {
+                is Response.Success -> {
+                    CustomDialog.hideDialog()
+                    val intent = Intent(requireActivity(), MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+
+                is Response.Error -> {
+                    CustomDialog.hideDialog()
+                    CustomDialog.showToast(requireActivity(), "Something wrong")
+                }
+
             }
+
         }
     }
 
@@ -141,18 +146,6 @@ class LoginFragment : Fragment(), View.OnClickListener, FirebaseLoginListener {
             include.etTvPassword.errorText.visibility = View.INVISIBLE
         }
         return true
-    }
-
-    override fun onSuccessListener(user: User) {
-        CustomDialog.hideDialog()
-        val intent = Intent(requireActivity(), MainActivity::class.java)
-        startActivity(intent)
-        activity?.finish()
-    }
-
-    override fun onFailureListener(exception: Exception) {
-        CustomDialog.hideDialog()
-        Toast.makeText(requireActivity(), "Something wrong", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

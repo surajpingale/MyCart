@@ -1,6 +1,5 @@
 package com.example.mycart.views.fragments
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,33 +8,46 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.example.dishapp.interfaces.CustomToolbar
 import com.example.mycart.R
 import com.example.mycart.application.MyCartApplication
 import com.example.mycart.databinding.FragmentProfileBinding
-import com.example.mycart.interfaces.UpdateProfileListener
 import com.example.mycart.utils.Constants
 import com.example.mycart.utils.CustomDialog
 import com.example.mycart.utils.Permissions
+import com.example.mycart.utils.Response
+import com.example.mycart.viewmodel.AddProductViewModel
+import com.example.mycart.viewmodel.AddProductViewModelFactory
+import com.example.mycart.viewmodel.UserDetailViewModel
+import com.example.mycart.viewmodel.UserViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 
-class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener {
+class ProfileFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentProfileBinding? = null
 
     private val binding: FragmentProfileBinding
         get() = _binding!!
 
-    private lateinit var appClass: MyCartApplication
-    private lateinit var firebaseStorage: FirebaseStorage
-    private lateinit var firebaseFireStore: FirebaseFirestore
-    private lateinit var firebaseAuth: FirebaseAuth
+    private val productViewModel: AddProductViewModel by viewModels {
+        AddProductViewModelFactory(
+            (requireActivity().application as MyCartApplication).fireStoreRepository
+        )
+    }
+
+    private val userDetailViewModel: UserDetailViewModel by viewModels {
+        UserViewModelFactory(
+            (requireActivity().application as
+                    MyCartApplication).fireStoreRepository
+        )
+    }
     private var gender = Constants.MALE
 
-    private var imageUrl: Uri? = null
+    private var imageUrl: String = ""
 
     private val getImageFromGallery = registerForActivityResult(
         ActivityResultContracts
@@ -43,10 +55,23 @@ class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener 
     ) { uri ->
 
         if (uri != null) {
-            appClass.fireStore.uploadImageToCloud(
-                context!!, this,
-                uri, firebaseStorage
+            productViewModel.uploadImageToCloud(
+                context!!, uri
             )
+            productViewModel.imageLiveData.observe(viewLifecycleOwner) {
+                when (it) {
+                    is Response.Success -> {
+                        imageUrl = it.data!!
+                        Glide.with(requireActivity())
+                            .load(imageUrl)
+                            .placeholder(R.drawable.ic_user_placeholder)
+                            .into(binding.include.ivProfile)
+                    }
+                    is Response.Error -> {
+                        Toast.makeText(requireActivity(), "Error", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
     }
 
@@ -93,11 +118,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener 
 
     private fun initViews() {
 
-        appClass = requireActivity().application as MyCartApplication
-        firebaseStorage = appClass.firebaseStorage
-        firebaseFireStore = appClass.firebaseFirestore
-        firebaseAuth = appClass.firebaseAuth
-
         binding.include.ivProfile.setOnClickListener(this)
         binding.include.btnUpdateProfile.setOnClickListener(this)
         binding.include.tvGenderMale.setOnClickListener(this)
@@ -110,16 +130,10 @@ class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener 
 
         when (view!!.id) {
             include.ivProfile.id -> {
-                val camera =
-                    Permissions.checkPermissions(requireActivity())[Constants.permissionsArray[0]]
-                if (camera == true) {
-//                    permissionsResult.launch(Constants.permissionsArray)
+                if (Permissions.checkStoragePermission(requireActivity())) {
                     getImageFromGallery.launch("image/*")
                 } else {
-                    Permissions.requestPermissions(
-                        requireActivity(),
-                        Constants.permissionsArray, Constants.PERMISSION_REQUEST_CODE
-                    )
+                    Permissions.requestStoragePermission(requireActivity())
                 }
             }
 
@@ -158,10 +172,21 @@ class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener 
             userHashMap[Constants.IMAGE] = imageUrl!!
         }
 
-        appClass.fireStore.updateUserProfile(
-            this, firebaseFireStore,
-            firebaseAuth, userHashMap
-        )
+        userDetailViewModel.updateUserProfile(userHashMap)
+        userDetailViewModel.updateUserProfileLiveData.observe(viewLifecycleOwner) { state ->
+
+            when (state) {
+                is Response.Success -> {
+                    CustomDialog.hideDialog()
+                    CustomDialog.showToast(requireActivity(), "Updated successfully")
+                }
+                is Response.Error -> {
+                    CustomDialog.hideDialog()
+                    CustomDialog.showToast(requireActivity(), "Something wrong..")
+                }
+            }
+
+        }
 
     }
 
@@ -180,28 +205,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener 
         }
 
         return true
-    }
-
-    override fun onUpdateSuccess() {
-        CustomDialog.hideDialog()
-        showToast("Updated successfully")
-    }
-
-    override fun onUpdateFailed(exception: Exception) {
-        CustomDialog.hideDialog()
-        showToast("Something wrong..")
-    }
-
-    override fun onImageUpdateSuccess(imageUrl: Uri) {
-        Glide.with(requireActivity())
-            .load(imageUrl)
-            .placeholder(R.drawable.ic_profile)
-            .into(binding.include.ivProfile)
-
-        this.imageUrl = imageUrl
-    }
-
-    override fun onImageUpdateFailed(exception: Exception) {
     }
 
     private fun setGenderFemale() {
@@ -248,10 +251,6 @@ class ProfileFragment : Fragment(), View.OnClickListener, UpdateProfileListener 
             ContextCompat.getDrawable(requireActivity(), R.drawable.bg_gender_pressed)
         binding.include.tvGenderFemale.background =
             ContextCompat.getDrawable(requireActivity(), R.drawable.bg_gender_not_pressed)
-    }
-
-    private fun showToast(msg: String) {
-        Toast.makeText(requireActivity(), msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

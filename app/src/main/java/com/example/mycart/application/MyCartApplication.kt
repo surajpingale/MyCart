@@ -2,7 +2,6 @@ package com.example.mycart.application
 
 import android.app.Application
 import com.example.mycart.model.repository.FireStoreRepository
-import com.example.mycart.utils.FireStore
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -16,10 +15,6 @@ class MyCartApplication : Application() {
 
     val firebaseFirestore by lazy {
         Firebase.firestore
-    }
-
-    val fireStore by lazy {
-        FireStore()
     }
 
     val firebaseStorage by lazy {
