@@ -6,6 +6,7 @@ MyCart allows to user buy and sell their products online.
 ## Technologies
 
 * Kotlin
+* ViewBinding
 * Firebase Firestore
 * Glide
 * Recycler View
