@@ -113,9 +113,7 @@ class LoginFragment : Fragment(), View.OnClickListener{
                     CustomDialog.hideDialog()
                     CustomDialog.showToast(requireActivity(), "Something wrong")
                 }
-
             }
-
         }
     }
 
