@@ -15,6 +15,7 @@ MyCart allows to user buy and sell their products online.
 * Navigation Component
 * Diff Utils
 * Custom View
+* View Pager2
 
 ## Screenshots
 
